@@ -6,6 +6,15 @@
     <title>Self-Assessment | Anti-Balance</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <style>
+        .assessment-option {
+            text-decoration: none;
+            color: inherit;
+        }
+        .assessment-option h3, .assessment-option p {
+            text-decoration: none;
+        }
+    </style>
 </head>
 <body>
     <a href="index.html" class="logo" style="position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 1000; opacity: 0.8; transition: opacity 0.3s ease; cursor: pointer; text-decoration: none; padding: 10px;">
@@ -22,30 +31,43 @@
         <p class="tagline">How well does this philosophy resonate with you?</p>
 
         <div class="assessment-options">
-            <button class="assessment-option" data-level="beginner">
+            <a href="beginner-guide.html" class="assessment-option">
                 <h3>A Bit - I'm Just Starting</h3>
                 <p>I'm new to this and want to learn the fundamentals.</p>
-            </button>
+            </a>
 
-            <button class="assessment-option" data-level="intermediate">
+            <a href="intermediate-guide.html" class="assessment-option">
                 <h3>I'm Already A Hardworker but Want To Do More</h3>
                 <p>I understand the concepts but need help implementing them consistently.</p>
-            </button>
+            </a>
 
-            <button class="assessment-option" data-level="advanced">
+            <a href="advanced-guide.html" class="assessment-option">
                 <h3>I Live It Already, I Want To Go All In</h3>
                 <p>I'm want to go all in and make a guaranteed impact.</p>
-            </button>
+            </a>
         </div>
-
-        <button class="continue-button">
-            Continue
-            <span class="shortcut-hint">↵</span>
-        </button>
 
         <div class="page-number">Step 3 of 4</div>
     </div>
 
-    <script src="plan.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Add fade-in animation
+            document.body.classList.add('fade-in');
+
+            // Add hover effect
+            const options = document.querySelectorAll('.assessment-option');
+            options.forEach(option => {
+                option.addEventListener('mouseenter', () => {
+                    options.forEach(o => o.classList.remove('selected'));
+                    option.classList.add('selected');
+                });
+                
+                option.addEventListener('mouseleave', () => {
+                    option.classList.remove('selected');
+                });
+            });
+        });
+    </script>
 </body>
 </html> 

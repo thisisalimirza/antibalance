@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Get Your Free Guide | Anti-Balance</title>
+    <title>Free Implementation Guide | Anti-Balance</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -19,13 +19,19 @@
 
     <div class="action-container">
         <div class="get-detailed-plan">
-            <h3>Get Your Free Anti-Balance Guide</h3>
-            <p id="guideDescription">Enter your email to receive your personalized guide and action plan.</p>
+            <h3>Get Your Free Implementation Guide</h3>
+            <p>Ready to level up? Get our implementation blueprint including:</p>
+            <ul style="text-align: left; margin: 20px 0; color: #64748b;">
+                <li>The Anti-Balance Implementation Framework</li>
+                <li>Weekly Progress Tracker</li>
+                <li>Habit Building Templates</li>
+                <li>Consistency Challenge Guide</li>
+            </ul>
             
             <form class="email-form" onsubmit="handleSubmit(event)">
                 <input type="email" id="userEmail" placeholder="Enter your email" required>
                 <button type="submit" class="continue-button">
-                    Get Your Guide
+                    Get Free Guide
                     <span class="shortcut-hint">↵</span>
                 </button>
             </form>
@@ -36,21 +42,7 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // Add fade-in animation
             document.body.classList.add('fade-in');
-
-            // Get the user's selected level from localStorage
-            const level = localStorage.getItem('selectedLevel');
-            const description = document.getElementById('guideDescription');
-
-            // Update description based on level
-            if (level === 'beginner') {
-                description.textContent = "Enter your email to receive the Anti-Balance Starter Pack - your complete guide to getting started with intentional imbalance.";
-            } else if (level === 'intermediate') {
-                description.textContent = "Enter your email to receive the Anti-Balance Implementation Guide - your blueprint for turning knowledge into consistent action.";
-            } else if (level === 'advanced') {
-                description.textContent = "Enter your email to receive the Anti-Balance Mastery Framework - your roadmap to scaling your impact and mastering intentional imbalance.";
-            }
         });
 
         function handleSubmit(event) {
@@ -58,15 +50,13 @@
             const userEmail = document.getElementById('userEmail');
             
             if (userEmail.value) {
-                // Store email for use on thank you page
                 localStorage.setItem('userEmail', userEmail.value);
+                localStorage.setItem('selectedLevel', 'intermediate');
+                localStorage.setItem('showGuideMessage', 'true');
                 
-                // Add fade-out animation
                 document.body.classList.add('fade-out');
-                
-                // Redirect to thank you page after animation
                 setTimeout(() => {
-                    window.location.href = 'thank-you.html';
+                    window.location.href = 'intermediate.html';
                 }, 500);
             } else {
                 userEmail.classList.add('shake');

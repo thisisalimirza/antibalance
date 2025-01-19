@@ -6,9 +6,24 @@
     <title>Level Up Your Practice | Anti-Balance</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <style>
+        .guide-message {
+            background: #e2f0ff;
+            color: #1a365d;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            display: none;
+            animation: slideDown 0.5s ease forwards;
+        }
+        @keyframes slideDown {
+            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+    </style>
 </head>
 <body>
-    <a href="index.html" class="logo" style="position: absolute; top: 20px; left: 50%; transform: translateX(-50%); z-index: 1000; opacity: 0.8; transition: opacity 0.3s ease; cursor: pointer; text-decoration: none; padding: 10px;">
+    <a href="index.html" class="logo" style="position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 1000; opacity: 0.8; transition: opacity 0.3s ease; cursor: pointer; text-decoration: none; padding: 10px;">
         <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M20 5 L35 35 L5 35 Z" stroke="#2c3e50" stroke-width="2" fill="none" transform="rotate(25, 20, 20)"/>
             <line x1="5" y1="35" x2="35" y2="35" stroke="#2c3e50" stroke-width="2"/>
@@ -18,6 +33,10 @@
     </a>
 
     <div class="action-container">
+        <div class="guide-message" style="display: block;">
+            ✨ Your Implementation Guide is on its way! Check your email (<span id="userEmailDisplay"></span>) for the download link.
+        </div>
+
         <h1>Take Your Practice to the Next Level</h1>
         <p class="tagline">You've made great progress! Let's take your Anti-Balance practice to the next level with actionable resources.</p>
 
@@ -65,6 +84,12 @@
         <div class="page-number">Step 4 of 4</div>
     </div>
 
-    <script src="intermediate.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.body.classList.add('fade-in');
+            const userEmail = localStorage.getItem('userEmail');
+            document.getElementById('userEmailDisplay').textContent = userEmail;
+        });
+    </script>
 </body>
 </html> 

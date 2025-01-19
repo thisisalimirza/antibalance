@@ -6,6 +6,21 @@
     <title>Master Anti-Balance | Premium Coaching</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <style>
+        .guide-message {
+            background: #e2f0ff;
+            color: #1a365d;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            display: none;
+            animation: slideDown 0.5s ease forwards;
+        }
+        @keyframes slideDown {
+            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+    </style>
 </head>
 <body>
     <a href="index.html" class="logo" style="position: absolute; top: 20px; left: 50%; transform: translateX(-50%); z-index: 1000; opacity: 0.8; transition: opacity 0.3s ease; cursor: pointer; text-decoration: none; padding: 10px;">
@@ -18,6 +33,10 @@
     </a>
 
     <div class="action-container">
+        <div class="guide-message" style="display: block;">
+            ✨ Your Mastery Framework is on its way! Check your email (<span id="userEmailDisplay"></span>) for the download link.
+        </div>
+
         <h1>You're already living Anti-Balance. Now let's master it together.</h1>
         <p class="tagline">Take your practice to the next level with premium resources designed for advanced practitioners.</p>
 
@@ -69,8 +88,9 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // Animation for the content
             document.body.classList.add('fade-in');
+            const userEmail = localStorage.getItem('userEmail');
+            document.getElementById('userEmailDisplay').textContent = userEmail;
         });
     </script>
 </body>

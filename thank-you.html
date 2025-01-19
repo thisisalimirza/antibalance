@@ -18,25 +18,17 @@
     </a>
 
     <div class="action-container">
-        <div class="get-detailed-plan" style="text-align: center; margin-bottom: 40px;">
-            <h1 style="color: #27ae60;">✓ Check Your Email!</h1>
-            <p style="font-size: 1.1rem; margin: 20px 0;">Your personalized Anti-Balance action plan is on its way. While you wait, explore these resources to get started:</p>
+        <div class="get-detailed-plan">
+            <h3>✓ Check Your Email!</h3>
+            <p id="confirmationMessage">Your guide is on its way to your inbox. While you wait, check out these resources designed specifically for you:</p>
         </div>
 
-        <div class="offerings-grid">
-            <div class="offering-card primary">
-                <h3>Free Starter Pack</h3>
-                <p>Get instant access to our starter guides, action plans, and checklists to ease into the Anti-Balance mindset.</p>
-                <button class="continue-button">
-                    Download Now
-                    <span class="shortcut-hint">↵</span>
-                </button>
-            </div>
-
+        <!-- Beginner Offerings -->
+        <div class="offerings-grid" id="beginnerOfferings" style="display: none;">
             <div class="offering-card featured">
                 <div class="featured-badge">Best Value</div>
                 <h3>Anti-Balance Beginner's Playbook</h3>
-                <p>A comprehensive guide to build a strong foundation for your Anti-Balance journey.</p>
+                <p>A comprehensive guide to build a strong foundation for your Anti-Balance journey. Includes step-by-step instructions and practical exercises.</p>
                 <div class="price">$19</div>
                 <button class="continue-button">
                     Get Started
@@ -45,10 +37,64 @@
             </div>
 
             <div class="offering-card community">
-                <h3>Join Our Free Community</h3>
-                <p>Get support from others like you and stay consistent by joining the Anti-Balance Community—it's free!</p>
+                <h3>Join Our Community</h3>
+                <p>Connect with other beginners, share your progress, and get support from the Anti-Balance community.</p>
                 <button class="continue-button secondary">
-                    Join Community
+                    Join Free Community
+                    <span class="shortcut-hint">↵</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Intermediate Offerings -->
+        <div class="offerings-grid" id="intermediateOfferings" style="display: none;">
+            <div class="offering-card featured">
+                <div class="featured-badge">Most Popular</div>
+                <h3>The Create More Habit Blueprint</h3>
+                <p>Master the art of consistent creation with our proven system for building lasting habits and routines.</p>
+                <div class="price">$29</div>
+                <button class="continue-button">
+                    Get Access
+                    <span class="shortcut-hint">↵</span>
+                </button>
+            </div>
+
+            <div class="offering-card">
+                <h3>Anti-Balance Productivity Bundle</h3>
+                <p>Everything you need to implement the Anti-Balance philosophy consistently, including templates, trackers, and guides.</p>
+                <div class="price">$49</div>
+                <button class="continue-button">
+                    Get Bundle
+                    <span class="shortcut-hint">↵</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Advanced Offerings -->
+        <div class="offerings-grid" id="advancedOfferings" style="display: none;">
+            <div class="offering-card featured" style="grid-column: span 2;">
+                <div class="featured-badge">Premium Program</div>
+                <h3>3-Month Coaching Program</h3>
+                <p>Our signature coaching program is designed to help you refine your systems, scale your impact, and fully embody the Anti-Balance philosophy.</p>
+                <ul style="text-align: left; margin: 20px 0; color: #64748b;">
+                    <li>1:1 coaching sessions to refine your practice</li>
+                    <li>Custom systems and frameworks development</li>
+                    <li>Direct access to expert guidance</li>
+                    <li>Accountability and progress tracking</li>
+                </ul>
+                <div class="price">$1,000</div>
+                <button class="continue-button">
+                    Apply Now
+                    <span class="shortcut-hint">↵</span>
+                </button>
+            </div>
+
+            <div class="offering-card">
+                <h3>Mastering Intentional Imbalance</h3>
+                <p>Take the next step with our advanced framework for intentional living. Includes detailed systems you can implement immediately.</p>
+                <div class="price">$49</div>
+                <button class="continue-button">
+                    Get Access
                     <span class="shortcut-hint">↵</span>
                 </button>
             </div>
@@ -57,8 +103,27 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // Animation for the content
+            // Add fade-in animation
             document.body.classList.add('fade-in');
+
+            // Get the user's level and email from localStorage
+            const level = localStorage.getItem('selectedLevel');
+            const email = localStorage.getItem('userEmail');
+
+            // Show appropriate offerings based on level
+            if (level === 'beginner') {
+                document.getElementById('beginnerOfferings').style.display = 'grid';
+            } else if (level === 'intermediate') {
+                document.getElementById('intermediateOfferings').style.display = 'grid';
+            } else if (level === 'advanced') {
+                document.getElementById('advancedOfferings').style.display = 'grid';
+            }
+
+            // Update confirmation message with email
+            const confirmationMessage = document.getElementById('confirmationMessage');
+            if (email) {
+                confirmationMessage.textContent = `Your guide is on its way to ${email}. While you wait, check out these resources designed specifically for you:`;
+            }
         });
     </script>
 </body>
