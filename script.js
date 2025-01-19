@@ -1,4 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('DOM Content Loaded'); // Debug log
+    
     // Confetti setup
     const canvas = document.getElementById('confetti-canvas');
     const ctx = canvas.getContext('2d');
@@ -19,13 +21,13 @@ document.addEventListener('DOMContentLoaded', () => {
             this.y = y;
             this.size = Math.random() * 8 + 4;
             this.speedX = Math.random() * spread - spread/2;
-            this.speedY = Math.random() * -spread * 1.5; // Increased upward velocity
+            this.speedY = Math.random() * -spread * 1.5;
             this.color = colors[Math.floor(Math.random() * colors.length)];
             this.rotation = Math.random() * 360;
             this.rotationSpeed = (Math.random() - 0.5) * 10;
             this.gravity = gravity;
             this.alpha = 1;
-            this.decay = Math.random() * 0.02 + 0.01; // Fade out rate
+            this.decay = Math.random() * 0.02 + 0.01;
         }
 
         update() {
@@ -49,7 +51,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function createConfetti(x, y) {
         particles.length = 0;
-        // Get button position relative to viewport
         for(let i = 0; i < particleCount; i++) {
             particles.push(new Particle(x, y));
         }
@@ -65,7 +66,6 @@ document.addEventListener('DOMContentLoaded', () => {
             particles[i].update();
             particles[i].draw();
             
-            // Remove particles that are off screen or fully faded
             if (particles[i].alpha <= 0 || 
                 particles[i].y > canvas.height || 
                 particles[i].x < 0 || 
@@ -93,6 +93,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const createMoreButton = document.getElementById('createMore');
     const values = document.querySelectorAll('.value');
 
+    // Immersive Experience Elements
+    const immersiveContainer = document.getElementById('immersiveExperience');
+    const sections = document.querySelectorAll('.immersive-section');
+    const prevButton = document.getElementById('prevStep');
+    const nextButton = document.getElementById('nextStep');
+    const currentStepDisplay = document.querySelector('.current-step');
+    let currentStep = 0;
+
     function showCoreValues() {
         mainMessage.classList.add('hidden');
         coreValues.classList.add('visible');
@@ -110,10 +118,32 @@ document.addEventListener('DOMContentLoaded', () => {
         values.forEach(v => v.classList.remove('expanded'));
     }
 
+    function startImmersiveExperience() {
+        immersiveContainer.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+        updateStep(0);
+    }
+
+    function updateStep(step) {
+        if (step < 0 || step >= sections.length) return;
+        
+        currentStep = step;
+        sections.forEach((section, index) => {
+            if (index === step) {
+                section.classList.remove('hidden');
+            } else {
+                section.classList.add('hidden');
+            }
+        });
+        
+        currentStepDisplay.textContent = (step + 1).toString();
+        prevButton.disabled = step === 0;
+        nextButton.disabled = step === sections.length - 1;
+    }
+
     function handleCreateMore(event) {
         createMoreButton.style.transform = 'scale(0.95)';
         
-        // Get button position
         const rect = createMoreButton.getBoundingClientRect();
         const x = rect.left + rect.width / 2;
         const y = rect.top + rect.height / 2;
@@ -122,7 +152,8 @@ document.addEventListener('DOMContentLoaded', () => {
         
         setTimeout(() => {
             createMoreButton.style.transform = 'scale(1)';
-        }, 150);
+            startImmersiveExperience();
+        }, 1000);
     }
 
     function handleValueInteraction(value) {
@@ -131,6 +162,152 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         value.classList.toggle('expanded');
     }
+
+    // Navigation event listeners
+    prevButton.addEventListener('click', () => updateStep(currentStep - 1));
+    nextButton.addEventListener('click', () => updateStep(currentStep + 1));
+
+    // Creation options event listeners
+    const creationOptions = document.querySelectorAll('.creation-option');
+    console.log('Found creation options:', creationOptions.length);
+
+    creationOptions.forEach((option, index) => {
+        console.log('Setting up listener for option:', index);
+        
+        option.addEventListener('click', function() {
+            console.log('Option clicked:', this.getAttribute('data-type'));
+            
+            // Visual feedback
+            this.style.transform = 'scale(0.95)';
+            
+            // Store the user's choice
+            const creationType = this.getAttribute('data-type');
+            localStorage.setItem('selectedCreationType', creationType);
+            
+            // Hide current section and show philosophy section
+            const currentSection = document.getElementById('creationQuestion');
+            const philosophySection = document.getElementById('philosophyOverview');
+            
+            if (currentSection && philosophySection) {
+                currentSection.classList.add('hidden');
+                philosophySection.classList.remove('hidden');
+                
+                // Start the pillar sequence
+                startPillarSequence();
+                
+                // Update step counter
+                currentStep = 1;
+                currentStepDisplay.textContent = '2';
+                prevButton.disabled = false;
+                nextButton.disabled = false;
+            }
+            
+            // Reset transform after animation
+            setTimeout(() => {
+                this.style.transform = 'scale(1)';
+            }, 150);
+        });
+    });
+
+    function startPillarSequence() {
+        const pillars = document.querySelectorAll('.pillar-reveal');
+        const finalQuestion = document.querySelector('.final-question');
+        let currentIndex = 0;
+        
+        // Hide all pillars initially
+        pillars.forEach(pillar => {
+            pillar.style.opacity = '0';
+            pillar.style.transform = 'translateY(20px)';
+            pillar.classList.remove('visible');
+        });
+        
+        // Hide final question
+        if (finalQuestion) {
+            finalQuestion.classList.remove('visible');
+            finalQuestion.style.display = 'none';
+        }
+        
+        function showNextPillar() {
+            if (currentIndex > 0) {
+                // Hide previous pillar
+                const prevPillar = pillars[currentIndex - 1];
+                prevPillar.style.opacity = '0';
+                prevPillar.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                    prevPillar.classList.remove('visible');
+                }, 500);
+            }
+            
+            if (currentIndex < pillars.length) {
+                // Show current pillar
+                const currentPillar = pillars[currentIndex];
+                currentPillar.classList.add('visible');
+                setTimeout(() => {
+                    currentPillar.style.opacity = '1';
+                    currentPillar.style.transform = 'translateY(0)';
+                }, 50);
+                
+                currentIndex++;
+                setTimeout(showNextPillar, 2000);
+            } else {
+                // Show final question
+                if (finalQuestion) {
+                    finalQuestion.style.display = 'block';
+                    setTimeout(() => {
+                        finalQuestion.classList.add('visible');
+                    }, 50);
+                }
+            }
+        }
+        
+        // Start sequence
+        setTimeout(showNextPillar, 500);
+    }
+
+    // Handle continue button in final question
+    document.querySelector('.continue-button').addEventListener('click', () => {
+        const purposeText = document.querySelector('#creationPurpose').value.trim();
+        if (purposeText) {
+            localStorage.setItem('creationPurpose', purposeText);
+            updateStep(currentStep + 1);
+        } else {
+            alert('Please share your intention before continuing.');
+        }
+    });
+
+    // Form submissions
+    document.querySelector('.newsletter-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const email = e.target.querySelector('input[type="email"]').value;
+        // Handle newsletter signup
+        alert('Thanks for subscribing! We\'ll be in touch soon.');
+    });
+
+    document.querySelector('.join-challenge').addEventListener('click', () => {
+        // Handle challenge signup
+        alert('Welcome to the challenge! Check your email for next steps.');
+    });
+
+    // Generate plan functionality
+    document.querySelector('.generate-plan').addEventListener('click', () => {
+        const planSteps = document.querySelectorAll('.plan-step textarea');
+        let isValid = true;
+        planSteps.forEach(step => {
+            if (!step.value.trim()) {
+                isValid = false;
+                step.style.border = '1px solid #e74c3c';
+            } else {
+                step.style.border = '1px solid rgba(255, 255, 255, 0.2)';
+            }
+        });
+
+        if (isValid) {
+            alert('Your personalized Anti-Balance plan has been generated!');
+            updateStep(currentStep + 1);
+        } else {
+            alert('Please fill in all plan steps to continue.');
+        }
+    });
 
     // Swipe handling
     let touchStartX = 0;
@@ -183,7 +360,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         switch(e.key.toLowerCase()) {
             case 'escape':
-                showMainMessage();
+                if (!immersiveContainer.classList.contains('hidden')) {
+                    immersiveContainer.classList.add('hidden');
+                    document.body.style.overflow = '';
+                } else {
+                    showMainMessage();
+                }
                 break;
             case 'v':
                 showCoreValues();

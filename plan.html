@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Self-Assessment | Anti-Balance</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <a href="pillars.html" class="back-button">
+        <span class="shortcut-hint">ESC</span>
+        <span>Back</span>
+    </a>
+
+    <div class="container">
+        <div class="logo">
+            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20 5 L35 35 L5 35 Z" stroke="#2c3e50" stroke-width="2" fill="none" transform="rotate(25, 20, 20)"/>
+                <line x1="5" y1="35" x2="35" y2="35" stroke="#2c3e50" stroke-width="2"/>
+                <circle cx="12" cy="28" r="3" fill="#2c3e50"/>
+                <circle cx="28" cy="15" r="3" fill="#2c3e50"/>
+            </svg>
+        </div>
+
+        <h1>Quick Self-Assessment</h1>
+        <p>How close are you to living this philosophy?</p>
+
+        <div class="assessment-container">
+            <div class="assessment-options">
+                <button class="assessment-option" data-level="beginner">
+                    <h3>Just Starting</h3>
+                    <p>I'm new to these ideas and ready to begin the journey</p>
+                </button>
+
+                <button class="assessment-option" data-level="intermediate">
+                    <h3>I'm Halfway There</h3>
+                    <p>I practice some of these principles but want to improve</p>
+                </button>
+
+                <button class="assessment-option" data-level="advanced">
+                    <h3>I Live It, But Want to Go Deeper</h3>
+                    <p>I embody these values and seek to master them</p>
+                </button>
+            </div>
+
+            <button class="continue-button" id="continue">
+                Continue
+                <span class="shortcut-hint">↵</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="page-number">Step 3 of 4</div>
+
+    <script src="plan.js"></script>
+</body>
+</html> 
