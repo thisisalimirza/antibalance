@@ -1,4 +1,90 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Confetti setup
+    const canvas = document.getElementById('confetti-canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    // Confetti particles
+    const particles = [];
+    const particleCount = 150;
+    const gravity = 0.5;
+    const colors = ['#2c3e50', '#3498db', '#e74c3c', '#f1c40f', '#2ecc71'];
+    const spread = 100;
+
+    // Particle class
+    class Particle {
+        constructor(x, y) {
+            this.x = x;
+            this.y = y;
+            this.size = Math.random() * 8 + 4;
+            this.speedX = Math.random() * spread - spread/2;
+            this.speedY = Math.random() * -spread * 1.5; // Increased upward velocity
+            this.color = colors[Math.floor(Math.random() * colors.length)];
+            this.rotation = Math.random() * 360;
+            this.rotationSpeed = (Math.random() - 0.5) * 10;
+            this.gravity = gravity;
+            this.alpha = 1;
+            this.decay = Math.random() * 0.02 + 0.01; // Fade out rate
+        }
+
+        update() {
+            this.x += this.speedX;
+            this.y += this.speedY;
+            this.speedY += this.gravity;
+            this.rotation += this.rotationSpeed;
+            this.alpha -= this.decay;
+        }
+
+        draw() {
+            ctx.save();
+            ctx.translate(this.x, this.y);
+            ctx.rotate(this.rotation * Math.PI / 180);
+            ctx.fillStyle = this.color;
+            ctx.globalAlpha = this.alpha;
+            ctx.fillRect(-this.size/2, -this.size/2, this.size, this.size);
+            ctx.restore();
+        }
+    }
+
+    function createConfetti(x, y) {
+        particles.length = 0;
+        // Get button position relative to viewport
+        for(let i = 0; i < particleCount; i++) {
+            particles.push(new Particle(x, y));
+        }
+        animate();
+    }
+
+    function animate() {
+        if (particles.length === 0) return;
+        
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        for (let i = particles.length - 1; i >= 0; i--) {
+            particles[i].update();
+            particles[i].draw();
+            
+            // Remove particles that are off screen or fully faded
+            if (particles[i].alpha <= 0 || 
+                particles[i].y > canvas.height || 
+                particles[i].x < 0 || 
+                particles[i].x > canvas.width) {
+                particles.splice(i, 1);
+            }
+        }
+        
+        if (particles.length > 0) {
+            requestAnimationFrame(animate);
+        }
+    }
+
+    // Window resize handling
+    window.addEventListener('resize', () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    });
+
     // Toggle functionality
     const toggleButton = document.getElementById('toggleValues');
     const toggleText = toggleButton.querySelector('.toggle-text');
@@ -21,16 +107,21 @@ document.addEventListener('DOMContentLoaded', () => {
         toggleText.textContent = 'Read Our Values';
         toggleButton.title = 'Press V to toggle';
         toggleButton.querySelector('.shortcut-hint').textContent = 'V';
-        // Close all expanded values when returning to main
         values.forEach(v => v.classList.remove('expanded'));
     }
 
-    function handleCreateMore() {
+    function handleCreateMore(event) {
         createMoreButton.style.transform = 'scale(0.95)';
+        
+        // Get button position
+        const rect = createMoreButton.getBoundingClientRect();
+        const x = rect.left + rect.width / 2;
+        const y = rect.top + rect.height / 2;
+        
+        createConfetti(x, y);
+        
         setTimeout(() => {
             createMoreButton.style.transform = 'scale(1)';
-            // Add your create more functionality here
-            console.log('Create More clicked!');
         }, 150);
     }
 
@@ -44,7 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Swipe handling
     let touchStartX = 0;
     let touchEndX = 0;
-    const swipeThreshold = 50; // minimum distance for a swipe
+    const swipeThreshold = 50;
 
     function handleTouchStart(event) {
         touchStartX = event.touches[0].clientX;
@@ -56,16 +147,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function handleTouchEnd() {
         const swipeDistance = touchEndX - touchStartX;
-        
-        // Only handle horizontal swipes
         if (Math.abs(swipeDistance) > swipeThreshold) {
             if (swipeDistance > 0) {
-                // Swipe right - go back to main
                 if (coreValues.classList.contains('visible')) {
                     showMainMessage();
                 }
             } else {
-                // Swipe left - show values
                 if (!coreValues.classList.contains('visible')) {
                     showCoreValues();
                 }
@@ -73,7 +160,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Add touch event listeners
     document.addEventListener('touchstart', handleTouchStart, false);
     document.addEventListener('touchmove', handleTouchMove, false);
     document.addEventListener('touchend', handleTouchEnd, false);
@@ -90,7 +176,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Keyboard navigation
     document.addEventListener('keydown', (e) => {
-        // Only handle keyboard shortcuts if no input is focused
         if (document.activeElement.tagName === 'INPUT' || 
             document.activeElement.tagName === 'TEXTAREA') {
             return;
@@ -105,7 +190,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 break;
             case 'c':
                 if (!coreValues.classList.contains('visible')) {
-                    handleCreateMore();
+                    const rect = createMoreButton.getBoundingClientRect();
+                    handleCreateMore({
+                        clientX: rect.left + rect.width / 2,
+                        clientY: rect.top + rect.height / 2
+                    });
                 }
                 break;
             case '1':
@@ -155,7 +244,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
         
-        // Only add number hints on desktop
         if (window.innerWidth > 768) {
             const hint = document.createElement('span');
             hint.className = 'shortcut-hint value-shortcut';
