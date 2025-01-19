@@ -2,42 +2,44 @@ document.addEventListener('DOMContentLoaded', () => {
     // Add entrance animation
     document.body.classList.add('fade-in');
 
-    // Get elements
-    const options = document.querySelectorAll('.assessment-option');
-    const continueButton = document.getElementById('continue');
-    let selectedLevel = null;
+    const assessmentOptions = document.querySelectorAll('.assessment-option');
+    const continueButton = document.querySelector('.continue-button');
 
-    // Handle option selection
-    options.forEach(option => {
+    // Handle assessment option selection
+    assessmentOptions.forEach(option => {
         option.addEventListener('click', () => {
-            // Remove selection from other options
-            options.forEach(opt => opt.classList.remove('selected'));
-            
-            // Select clicked option
+            // Remove selected class from all options
+            assessmentOptions.forEach(opt => opt.classList.remove('selected'));
+            // Add selected class to clicked option
             option.classList.add('selected');
-            selectedLevel = option.getAttribute('data-level');
-            
+            // Store the selected level
+            const level = option.getAttribute('data-level');
+            localStorage.setItem('assessmentLevel', level);
             // Show continue button
             continueButton.classList.add('visible');
         });
     });
 
-    // Handle continue button
-    function handleContinue() {
-        if (selectedLevel) {
-            // Store the assessment level
-            localStorage.setItem('assessmentLevel', selectedLevel);
-            
-            // Transition to next page
-            document.body.classList.add('fade-out');
-            setTimeout(() => {
-                window.location.href = 'action.html';
-            }, 500);
-        }
-    }
-
+    // Handle continue button click
     if (continueButton) {
-        continueButton.addEventListener('click', handleContinue);
+        continueButton.addEventListener('click', () => {
+            const selectedLevel = localStorage.getItem('assessmentLevel');
+            document.body.classList.add('fade-out');
+            
+            setTimeout(() => {
+                // Direct to different pages based on assessment level
+                if (selectedLevel === 'beginner') {
+                    window.location.href = 'action.html';
+                } else if (selectedLevel === 'intermediate') {
+                    window.location.href = 'intermediate.html';
+                } else if (selectedLevel === 'advanced') {
+                    window.location.href = 'advanced.html';
+                } else {
+                    // Default to intermediate if something goes wrong
+                    window.location.href = 'intermediate.html';
+                }
+            }, 500);
+        });
     }
 
     // Back button handling
@@ -59,8 +61,8 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
                 window.location.href = 'pillars.html';
             }, 500);
-        } else if (e.key === 'Enter' && selectedLevel) {
-            handleContinue();
+        } else if (e.key === 'Enter' && !e.shiftKey && continueButton.classList.contains('visible')) {
+            continueButton.click();
         }
     });
 }); 

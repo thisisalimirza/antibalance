@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Action Plan | Anti-Balance</title>
+    <title>Thank You | Anti-Balance</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -18,22 +18,12 @@
     </a>
 
     <div class="action-container">
-        <h1>Welcome to Your Anti-Balance Journey!</h1>
-        <p class="tagline">Let's start with a free guide to help you build momentum.</p>
-
-        <div class="get-detailed-plan">
-            <h3>Get Your Free Action Plan</h3>
-            <p>Enter your email to receive a detailed guide customized to your intention.</p>
-            <form class="email-form" id="emailForm" onsubmit="handleSubmit(event)">
-                <input type="email" id="userEmail" placeholder="Your email address" required>
-                <button type="submit" class="continue-button">
-                    Get Your Plan
-                    <span class="shortcut-hint">↵</span>
-                </button>
-            </form>
+        <div class="get-detailed-plan" style="text-align: center; margin-bottom: 40px;">
+            <h1 style="color: #27ae60;">✓ Check Your Email!</h1>
+            <p style="font-size: 1.1rem; margin: 20px 0;">Your personalized Anti-Balance action plan is on its way. While you wait, explore these resources to get started:</p>
         </div>
 
-        <div class="offerings-grid" id="beginnerOfferings" style="display: none;">
+        <div class="offerings-grid">
             <div class="offering-card primary">
                 <h3>Free Starter Pack</h3>
                 <p>Get instant access to our starter guides, action plans, and checklists to ease into the Anti-Balance mindset.</p>
@@ -63,20 +53,13 @@
                 </button>
             </div>
         </div>
-
-        <div class="page-number">Step 4 of 4</div>
     </div>
 
     <script>
-        function handleSubmit(event) {
-            event.preventDefault();
-            const email = document.getElementById('userEmail').value;
-            
-            if (email) {
-                localStorage.setItem('userEmail', email);
-                window.location.href = 'thank-you.html';
-            }
-        }
+        document.addEventListener('DOMContentLoaded', () => {
+            // Animation for the content
+            document.body.classList.add('fade-in');
+        });
     </script>
 </body>
 </html> 
