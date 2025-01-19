@@ -1146,6 +1146,7 @@ p {
     font-weight: 500;
     cursor: pointer;
     transition: all 0.3s ease;
+    margin-top: 40px;
 }
 
 .continue-button:hover {
@@ -1360,6 +1361,7 @@ p {
 .assessment-options {
     display: grid;
     gap: 20px;
+    margin-bottom: 20px;
 }
 
 .assessment-option {
