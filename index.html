@@ -10,7 +10,20 @@
 <body>
     <div class="container">
         <div class="letter">
-            <button class="toggle-values" id="toggleValues">Read Our Values</button>
+            <button class="toggle-values" id="toggleValues" title="Press 'V' to toggle">
+                <span class="toggle-text">Read Our Values</span>
+                <span class="shortcut-hint">V</span>
+            </button>
+            
+            <div class="logo">
+                <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20 5 L35 35 L5 35 Z" stroke="#2c3e50" stroke-width="2" fill="none" transform="rotate(25, 20, 20)"/>
+                    <line x1="5" y1="35" x2="35" y2="35" stroke="#2c3e50" stroke-width="2"/>
+                    <circle cx="12" cy="28" r="3" fill="#2c3e50"/>
+                    <circle cx="28" cy="15" r="3" fill="#2c3e50"/>
+                </svg>
+            </div>
+            
             <h1>Anti-Balance</h1>
             <p class="tagline">"Work Hard. Create More. Consume Less. Be Useful."</p>
             
@@ -24,7 +37,10 @@
                             <div class="choice emphasized handwritten">Create More</div>
                         </div>
                         <p class="mission">Anti-Balance is a life philosophy that rejects the myth of perfect equilibrium in favor of intentional imbalance: dedicating yourself fully to meaningful work, relentless creation, and being a force for good in the lives of others.</p>
-                        <button class="button">Create More</button>
+                        <button class="button" id="createMore">
+                            Create More
+                            <span class="shortcut-hint">C</span>
+                        </button>
                     </div>
                 </div>
                 
@@ -32,28 +48,27 @@
                     <div class="core-values">
                         <h2>Our Core Values</h2>
                         <div class="values-grid">
-                            <div class="value">
+                            <div class="value" tabindex="0">
                                 <span class="value-number">01</span>
                                 <h3>Purpose Over Pleasure</h3>
                                 <p>Focus your life on contributing value rather than indulging in endless consumption.</p>
                             </div>
-                            <div class="value">
+                            <div class="value" tabindex="0">
                                 <span class="value-number">02</span>
                                 <h3>Relentless Work Ethic</h3>
                                 <p>Working hard isn't a burden—it's a privilege that brings meaning and fulfillment.</p>
                             </div>
-                            <div class="value">
+                            <div class="value" tabindex="0">
                                 <span class="value-number">03</span>
                                 <h3>Creating Over Consuming</h3>
                                 <p>Prioritize making, building, and sharing over passively consuming.</p>
                             </div>
-                            <div class="value">
+                            <div class="value" tabindex="0">
                                 <span class="value-number">04</span>
                                 <h3>Service to Others</h3>
                                 <p>A life well-lived is one that lifts others up and makes the world better.</p>
                             </div>
                         </div>
-                        <button class="button" id="backToMain">Back to Main</button>
                     </div>
                 </div>
             </div>
