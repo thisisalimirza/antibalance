@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const mainMessage = document.getElementById('mainMessage');
     const coreValues = document.getElementById('coreValues');
     const createMoreButton = document.getElementById('createMore');
+    const values = document.querySelectorAll('.value');
 
     function showCoreValues() {
         mainMessage.classList.add('hidden');
@@ -20,6 +21,8 @@ document.addEventListener('DOMContentLoaded', () => {
         toggleText.textContent = 'Read Our Values';
         toggleButton.title = 'Press V to toggle';
         toggleButton.querySelector('.shortcut-hint').textContent = 'V';
+        // Close all expanded values when returning to main
+        values.forEach(v => v.classList.remove('expanded'));
     }
 
     function handleCreateMore() {
@@ -30,6 +33,50 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log('Create More clicked!');
         }, 150);
     }
+
+    function handleValueInteraction(value) {
+        values.forEach(v => {
+            if (v !== value) v.classList.remove('expanded');
+        });
+        value.classList.toggle('expanded');
+    }
+
+    // Swipe handling
+    let touchStartX = 0;
+    let touchEndX = 0;
+    const swipeThreshold = 50; // minimum distance for a swipe
+
+    function handleTouchStart(event) {
+        touchStartX = event.touches[0].clientX;
+    }
+
+    function handleTouchMove(event) {
+        touchEndX = event.touches[0].clientX;
+    }
+
+    function handleTouchEnd() {
+        const swipeDistance = touchEndX - touchStartX;
+        
+        // Only handle horizontal swipes
+        if (Math.abs(swipeDistance) > swipeThreshold) {
+            if (swipeDistance > 0) {
+                // Swipe right - go back to main
+                if (coreValues.classList.contains('visible')) {
+                    showMainMessage();
+                }
+            } else {
+                // Swipe left - show values
+                if (!coreValues.classList.contains('visible')) {
+                    showCoreValues();
+                }
+            }
+        }
+    }
+
+    // Add touch event listeners
+    document.addEventListener('touchstart', handleTouchStart, false);
+    document.addEventListener('touchmove', handleTouchMove, false);
+    document.addEventListener('touchend', handleTouchEnd, false);
 
     toggleButton.addEventListener('click', () => {
         if (coreValues.classList.contains('visible')) {
@@ -61,6 +108,18 @@ document.addEventListener('DOMContentLoaded', () => {
                     handleCreateMore();
                 }
                 break;
+            case '1':
+            case '2':
+            case '3':
+            case '4':
+                const valueIndex = parseInt(e.key) - 1;
+                if (coreValues.classList.contains('visible')) {
+                    handleValueInteraction(values[valueIndex]);
+                } else {
+                    showCoreValues();
+                    setTimeout(() => handleValueInteraction(values[valueIndex]), 400);
+                }
+                break;
         }
     });
 
@@ -88,21 +147,20 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Value card expansion
-    const values = document.querySelectorAll('.value');
-    
-    function handleValueInteraction(value) {
-        values.forEach(v => {
-            if (v !== value) v.classList.remove('expanded');
-        });
-        value.classList.toggle('expanded');
-    }
-
-    values.forEach(value => {
+    values.forEach((value, index) => {
         value.addEventListener('click', () => handleValueInteraction(value));
         value.addEventListener('keypress', (e) => {
             if (e.key === 'Enter' || e.key === ' ') {
                 handleValueInteraction(value);
             }
         });
+        
+        // Only add number hints on desktop
+        if (window.innerWidth > 768) {
+            const hint = document.createElement('span');
+            hint.className = 'shortcut-hint value-shortcut';
+            hint.textContent = (index + 1).toString();
+            value.appendChild(hint);
+        }
     });
 }); 

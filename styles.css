@@ -15,6 +15,12 @@
     100% { transform: translateY(0px); }
 }
 
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(44, 62, 80, 0.4); }
+    70% { box-shadow: 0 0 0 10px rgba(44, 62, 80, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(44, 62, 80, 0); }
+}
+
 body {
     font-family: 'Inter', sans-serif;
     background-color: #f5f5f5;
@@ -75,6 +81,7 @@ h1 {
 .main-message {
     opacity: 1;
     transform: translateX(0);
+    touch-action: pan-x pinch-zoom;
 }
 
 .main-message.hidden {
@@ -87,6 +94,7 @@ h1 {
     opacity: 0;
     transform: translateX(20px);
     pointer-events: none;
+    touch-action: pan-x pinch-zoom;
 }
 
 .core-values-section.visible {
@@ -182,19 +190,21 @@ h1 {
 }
 
 .value {
-    background-color: white;
+    background: linear-gradient(135deg, white, #f8fafc);
     padding: 25px;
     border-radius: 8px;
     position: relative;
     border: 1px solid #e2e8f0;
     transition: all 0.3s ease;
     cursor: pointer;
+    touch-action: pan-y pinch-zoom;
 }
 
 .value:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
     border-color: #cbd5e1;
+    background: linear-gradient(135deg, white, #f1f5f9);
 }
 
 .value-number {
@@ -253,12 +263,14 @@ h1 {
     border: none;
     position: relative;
     overflow: hidden;
+    animation: pulse 2s infinite;
 }
 
 .button:hover {
     background-color: #1e2a37;
     transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    animation: none;
 }
 
 .button:active {
@@ -322,12 +334,74 @@ h1 {
 }
 
 @media (max-width: 768px) {
+    .letter {
+        padding: 30px 20px;
+    }
+
     .values-grid {
         grid-template-columns: 1fr;
+        gap: 20px;
     }
     
     .shortcut-hint {
         display: none;
+    }
+
+    h1 {
+        font-size: 2.2rem;
+    }
+
+    .tagline {
+        font-size: 1rem;
+        margin-bottom: 30px;
+    }
+
+    .choice {
+        font-size: 2rem;
+    }
+
+    .message-container {
+        padding: 20px;
+    }
+
+    .value {
+        padding: 20px;
+    }
+
+    .value h3 {
+        font-size: 1.1rem;
+        margin-top: 15px;
+    }
+
+    .value-number {
+        font-size: 0.8rem;
+        padding: 4px 8px;
+    }
+
+    .logo {
+        top: 15px;
+        left: 15px;
+    }
+
+    .logo svg {
+        width: 30px;
+        height: 30px;
+    }
+
+    .toggle-values {
+        top: 15px;
+        right: 15px;
+        padding: 6px 12px;
+        font-size: 0.85rem;
+    }
+
+    .button {
+        padding: 10px 30px;
+        font-size: 1rem;
+    }
+
+    .value:active {
+        transform: scale(0.98);
     }
 }
 
@@ -357,4 +431,17 @@ h1 {
 .logo svg path {
     animation: tiltScale 3s ease-in-out infinite;
     transform-origin: center;
+}
+
+.value-shortcut {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: rgba(44, 62, 80, 0.1);
+    color: #2c3e50;
+    font-size: 0.75rem;
+}
+
+.value:hover .value-shortcut {
+    background-color: rgba(44, 62, 80, 0.15);
 } 
